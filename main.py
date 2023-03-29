@@ -25,36 +25,29 @@ class Login(object):
         self.input()
 
     def input(self):
-        # username = '18273737153'
-        # password = 'gongjian2023'
-        # username_input = self.browser.find_element(By.ID, 'login_lawyer_name')
-        # password_input = self.browser.find_element(By.ID, 'login_lawyer_psw')
-        # time.sleep(1)
-        # ActionChains(self.browser).click(username_input)
-        # time.sleep(1)
-        # username_input.send_keys(username)
-        # time.sleep(1)
-        # ActionChains(self.browser).click(password_input)
-        # time.sleep(1)
-        # # password_input.send_keys(username)
-        # ActionChains(self.browser).send_keys_to_element(
-        #     password_input, password).perform()
-        # time.sleep(1)
-
-        slider = self.browser.find_element(
-            By.CLASS_NAME, 'yidun_panel')  # 滑块定位
-
-        ActionChains(self.browser).click(slider)
+        username = '18273737153'
+        password = 'gongjian2023'
+        username_input = self.browser.find_element(By.ID, 'login_lawyer_name')
+        password_input = self.browser.find_element(By.ID, 'login_lawyer_psw')
         time.sleep(1)
-
-        #distance = self.get_distance()
-        #track = self.get_track(distance)
-        #print('滑动轨迹', track)
-
-        self.move_to_gap(slider, 150)
-
-        time.sleep(20)
-
+        ActionChains(self.browser).click(username_input)
+        time.sleep(1)
+        username_input.send_keys(username)
+        time.sleep(1)
+        ActionChains(self.browser).click(password_input)
+        time.sleep(1)
+        # password_input.send_keys(username)
+        ActionChains(self.browser).send_keys_to_element(
+            password_input, password).perform()
+        time.sleep(1)
+        slider = self.browser.find_element(
+            By.CLASS_NAME, 'yidun_slider')  # 滑块定位
+        ActionChains(self.browser).click(slider).perform()
+        time.sleep(1)
+        distance = self.get_distance()
+        track = self.get_track(distance+10)#该网站偏移量
+        print('滑动轨迹', track)
+        self.move_to_gap(slider, track)
         ActionChains(self.browser).key_down(Keys.CONTROL).send_keys(
             "t").key_up(Keys.CONTROL).perform()
 
@@ -117,14 +110,11 @@ class Login(object):
         ActionChains(self.browser).click_and_hold(
             on_element=slider).perform()         # 利用动作链，获取slider，perform是
         time.sleep(0.5)
-        ActionChains(self.browser).move_by_offset(
-            xoffset=150, yoffset=0).perform()
-        # for x in track:
-        #     print(x)
-        #     ActionChains(self.browser).move_by_offset(xoffset=x, yoffset=0).perform()       # xoffset横坐标，yoffset纵坐标。使得鼠标向前推进
-        #     time.sleep(0.2)
-        time.sleep(10)                                     # 推动到合适位置之后，暂停一会
-        #ActionChains(self.browser).release().perform()      # 抬起鼠标左键
+        for x in track:
+            print(x)
+            ActionChains(self.browser).move_by_offset(xoffset=x, yoffset=0).perform()       # xoffset横坐标，yoffset纵坐标。使得鼠标向前推进
+        time.sleep(1)  # 推动到合适位置之后，暂停一会
+        ActionChains(self.browser).release().perform()      # 抬起鼠标左键
 
     def get_images(self):
         bg_url = self.browser.find_element(
